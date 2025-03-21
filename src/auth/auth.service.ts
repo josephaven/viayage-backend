@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,9 +22,16 @@ export class AuthService {
 
   async login(email: string, password: string) {
     const user = await this.userRepository.findOne({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+  
+    if (!user) {
+      throw new UnauthorizedException('Usuario no encontrado');
+    }
+  
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciales incorrectas');
     }
+  
     const token = this.jwtService.sign({ userId: user.id });
     return { access_token: token };
   }
