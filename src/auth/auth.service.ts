@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
+import { RegisterDto } from '../auth/dto/register.dto'; 
 
 dotenv.config();
 
@@ -16,10 +17,22 @@ export class AuthService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async register(email: string, password: string) {
+  async register(registerDto: RegisterDto) {
+    const { nombre, apellido, fechaNacimiento, genero, email, password } = registerDto;
+  
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = this.userRepository.create({ email, password: hashedPassword });
+  
+    const user = this.userRepository.create({
+      nombre,
+      apellido,
+      fechaNacimiento,
+      genero,
+      email,
+      password: hashedPassword,
+    });
+  
     await this.userRepository.save(user);
+  
     return { message: 'Usuario registrado exitosamente' };
   }
 
