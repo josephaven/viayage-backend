@@ -21,10 +21,18 @@ export class QuestionnaireService {
   
     const questionnaire = this.repo.create({
       ...dto,
-      user: { id: user.id }, // 👈 clave aquí
+      user: { id: user.id },
     });
   
     return this.repo.save(questionnaire);
+  }
+  
+  async hasCompleted(userId: number): Promise<{ completed: boolean }> {
+    const count = await this.repo.count({
+      where: { user: { id: userId } },
+    });
+  
+    return { completed: count > 0 };
   }
   
 }
