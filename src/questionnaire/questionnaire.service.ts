@@ -28,11 +28,12 @@ export class QuestionnaireService {
   }
   
   async hasCompleted(userId: number): Promise<{ completed: boolean }> {
-    const count = await this.repo.count({
+    const existing = await this.repo.findOne({
       where: { user: { id: userId } },
     });
   
-    return { completed: count > 0 };
+    return { completed: !!existing };
   }
+  
   
 }
