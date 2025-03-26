@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Questionnaire } from './questionnaire/questionnaire.entity';
 import { QuestionnaireService } from './questionnaire/questionnaire.service';
 import { QuestionnaireController } from './questionnaire/questionnaire.controller';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [ 
@@ -22,6 +23,7 @@ import { QuestionnaireController } from './questionnaire/questionnaire.controlle
     }),
     TypeOrmModule.forFeature([Questionnaire, User]),
     AuthModule, 
+    UsersModule,
   ],
   controllers: [QuestionnaireController],
   providers: [QuestionnaireService],
