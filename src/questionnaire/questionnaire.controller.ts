@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { QuestionnaireService } from './questionnaire.service';
 import { QuestionnaireDto } from './dto/questionnaire.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('questionnaire')
 export class QuestionnaireController {
@@ -21,5 +21,8 @@ export class QuestionnaireController {
     return this.questionnaireService.hasCompleted(req.user.userId);
   }
 
-  
+
 }
+
+  
+

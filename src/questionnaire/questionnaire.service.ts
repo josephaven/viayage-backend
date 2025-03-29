@@ -8,32 +8,29 @@ import { User } from '../users/user.entity';
 @Injectable()
 export class QuestionnaireService {
   constructor(
-    @InjectRepository(Questionnaire) private repo: Repository<Questionnaire>,
-    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Questionnaire)
+    private questionnaireRepository: Repository<Questionnaire>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async saveResponses(userId: number, dto: QuestionnaireDto) {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-  
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-  
-    const questionnaire = this.repo.create({
+    const questionnaire = this.questionnaireRepository.create({
       ...dto,
-      user: { id: user.id },
+      user: { id: userId },
     });
-  
-    return this.repo.save(questionnaire);
+
+    await this.questionnaireRepository.save(questionnaire);
+
+    await this.userRepository.update(userId, { hasCompletedQuestionnaire: true });
+
+    return { message: 'Respuestas guardadas correctamente' };
   }
-  
+
   async hasCompleted(userId: number): Promise<{ completed: boolean }> {
-    const existing = await this.repo.findOne({
-      where: { user: { id: userId } },
-    });
-  
-    return { completed: !!existing };
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    return { completed: user?.hasCompletedQuestionnaire ?? false };
   }
-  
-  
 }
+

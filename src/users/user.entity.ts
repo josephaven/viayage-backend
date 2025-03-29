@@ -1,4 +1,4 @@
-import { Questionnaire } from 'src/questionnaire/questionnaire.entity';
+import { Questionnaire } from '../questionnaire/questionnaire.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
@@ -24,7 +24,7 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Questionnaire, questionnaire => questionnaire.user)
-  questionnaires: Questionnaire[];
+  @Column({ default: false })
+  hasCompletedQuestionnaire: boolean;
 
 }

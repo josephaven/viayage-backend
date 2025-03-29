@@ -60,16 +60,16 @@ export class AuthService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    console.log("✅ Usuario encontrado:", user.email);
+    console.log("Usuario encontrado:", user.email);
     const resetToken = this.jwtService.sign({ userId: user.id }, { expiresIn: '1h' });
 
-    console.log("🔑 Token generado:", resetToken);
-    console.log("📧 EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("🔑 EMAIL_PASS:", process.env.EMAIL_PASS);
+    console.log("Token generado:", resetToken);
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // true para SSL
+      secure: true, 
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,

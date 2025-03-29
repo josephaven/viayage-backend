@@ -6,7 +6,7 @@ export class Questionnaire {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.questionnaires, { nullable: false })
+  @ManyToOne(() => User, { nullable: false })
   user: User;
 
   @Column("simple-array")
